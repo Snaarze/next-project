@@ -1,5 +1,5 @@
 "use client";
-import { TextField, Button, Callout, Text } from "@radix-ui/themes";
+import { TextField, Button, Callout, Text, Spinner } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
@@ -19,11 +19,12 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 type issueForm = z.infer<typeof issuesSchema>;
 
 const page = () => {
+  const [isSubmitted, setSubmitting] = useState(false);
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
   } = useForm<issueForm>({
     resolver: zodResolver(issuesSchema),
   });
@@ -32,11 +33,13 @@ const page = () => {
   const router = useRouter();
   const onSubmit = async (data: issueForm) => {
     try {
+      setSubmitting(true);
       await axios.post("/api/issues/", data);
       router.push("/issues");
       alert("Successfully Added!");
     } catch (e) {
       setError("An unexpected Error");
+      setSubmitting(false);
     }
   };
 
@@ -69,7 +72,9 @@ const page = () => {
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button type="submit">Submit New Issue</Button>
+        <Button type="submit" disabled={isSubmitted}>
+          Submit New Issue {isSubmitted && <Spinner />}
+        </Button>
       </form>
     </div>
   );
