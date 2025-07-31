@@ -22,7 +22,7 @@ const NavBar = () => {
   //   remove this we can use usePathName which are built in for nextjs tracking which path is the current user
   //   const [active, setActive] = useState("");
   return (
-    <nav className="h-14 w-full flex items-center  gap-20 px-10 border-b border-slate-200 mb-5">
+    <nav className="h-14 w-full flex items-center  gap-10 pl-5 border-b border-slate-200 mb-5">
       <Link href="/">
         <AiFillBug />
       </Link>

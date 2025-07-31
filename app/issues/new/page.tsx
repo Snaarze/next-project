@@ -16,6 +16,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
 
+// this is a built in that make a interface with the help of defining of the schema
 type issueForm = z.infer<typeof issuesSchema>;
 
 const page = () => {
