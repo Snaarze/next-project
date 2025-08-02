@@ -4,6 +4,7 @@ import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import React from "react";
 import ReactMarkDown from "react-markdown";
+import delay from "delay";
 interface Props {
   params: { id: string };
 }
@@ -12,6 +13,7 @@ const page = async ({ params }: Props) => {
   // this doesnt work even if we use parseInt it would totally be unusable
   //   if (typeof params.id !== "number") return notFound();
   // with the nextjs api need to be fetch
+  await delay(2000);
   const { id } = await params;
   const uniqueIssue = await prisma.issue.findUnique({
     where: {
