@@ -5,6 +5,7 @@ import { prisma } from "@/prisma/client";
 import IssueStatusBadge from "../components/IssueStatusBadge";
 import delay from "delay";
 import NewIssueBtn from "./NewIssueBtn";
+import RadixLink from "../components/Link";
 
 // interface Issue {
 //   id: number;
@@ -55,7 +56,10 @@ const IssuesPage = async () => {
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-                <Link href={`/issues/${issue.id}`}> {issue.title}</Link>
+                <RadixLink
+                  href={`/issues/${issue.id}`}
+                  children={issue.title}
+                />
                 <div className="block md:hidden">
                   <IssueStatusBadge status={issue.status} />
                 </div>
