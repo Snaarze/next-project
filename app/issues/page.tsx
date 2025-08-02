@@ -1,11 +1,8 @@
-import React from "react";
-import { Button, Table } from "@radix-ui/themes";
-import Link from "next/link";
 import { prisma } from "@/prisma/client";
+import { Table } from "@radix-ui/themes";
 import IssueStatusBadge from "../components/IssueStatusBadge";
-import delay from "delay";
-import NewIssueBtn from "./NewIssueBtn";
 import RadixLink from "../components/Link";
+import NewIssueBtn from "./NewIssueBtn";
 
 // interface Issue {
 //   id: number;
@@ -18,7 +15,7 @@ const IssuesPage = async () => {
   // which is kinda weird as this course is focusing in typescript and nextjs
   // although it makes sense using in this scenario and it makes the website fast by rendering it via server
   const issues = await prisma.issue.findMany();
-  await delay(2000);
+
   // doing this will need to convert the component to client side
   // const [data, setData] = useState<Issue>();
   // console.log(data);
