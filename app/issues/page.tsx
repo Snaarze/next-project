@@ -4,12 +4,6 @@ import IssueStatusBadge from "../components/IssueStatusBadge";
 import RadixLink from "../components/Link";
 import NewIssueBtn from "./NewIssueBtn";
 
-// interface Issue {
-//   id: number;
-//   title: string;
-//   description: string;
-// }
-
 const IssuesPage = async () => {
   // directly get the data from the database without need to use the useState hooks, and interface
   // which is kinda weird as this course is focusing in typescript and nextjs
