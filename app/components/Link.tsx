@@ -9,9 +9,11 @@ interface Props {
 
 const RadixLink = ({ href, children }: Props) => {
   return (
-    <NextLink href={href} legacyBehavior>
-      <Link>{children}</Link>
-    </NextLink>
+    <Link asChild>
+      <NextLink href={href} passHref>
+        {children}
+      </NextLink>
+    </Link>
   );
 };
 
