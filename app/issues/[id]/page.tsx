@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import React from "react";
 import EditIssueBtn from "./edit/EditIssueBtn";
 import IssueDetail from "./IssueDetail";
+import DeleteBtn from "./delete/deleteBtn";
 interface Props {
   params: { id: string };
 }
@@ -29,9 +30,12 @@ const page = async ({ params }: Props) => {
       </Box>
       <Box>
         <EditIssueBtn id={uniqueIssue.id} />
+        <DeleteBtn issueId={uniqueIssue.id} />
       </Box>
     </Grid>
   );
 };
+
+export const revalidate = 0;
 
 export default page;

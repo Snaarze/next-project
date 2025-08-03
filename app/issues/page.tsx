@@ -28,6 +28,7 @@ const IssuesPage = async () => {
 
   //   fetchData();
   // }, []);
+
   return (
     <div>
       <NewIssueBtn />

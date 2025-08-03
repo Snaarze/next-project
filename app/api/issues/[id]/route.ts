@@ -50,3 +50,15 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   });
   return NextResponse.json(updatedIssue);
 }
+
+export async function DELETE(request: NextRequest, { params }: Props) {
+  const issue = await prisma.issue.delete({
+    where: {
+      id: parseInt(params.id),
+    },
+  });
+
+  if (!issue) NextResponse.json({ error: "User not found" }, { status: 404 });
+
+  return NextResponse.json(issue);
+}

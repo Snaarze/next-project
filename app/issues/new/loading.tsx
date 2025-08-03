@@ -1,7 +1,3 @@
-import React from "react";
+import IssueLoadingSkeleton from "../_components/IssueLoadingSkeleton";
 
-const LoadingNewIssuePage = () => {
-  return <div>Loading...</div>;
-};
-
-export default LoadingNewIssuePage;
+export default IssueLoadingSkeleton;
