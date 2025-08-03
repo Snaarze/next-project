@@ -50,6 +50,18 @@ const IssueForm = ({ issue }: Props) => {
     }
   };
 
+  const onUpdate = async (data: issueFormData) => {
+    try {
+      setSubmitting(true);
+      await axios.patch(`/api/issues/${issue?.id}`, data);
+      router.push(`/issues/${issue?.id}`);
+      alert("Successfully Added!");
+    } catch (e) {
+      setError("An unexpected Error");
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -60,7 +72,7 @@ const IssueForm = ({ issue }: Props) => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <form action="" onSubmit={handleSubmit(!issue ? onSubmit : onUpdate)}>
         <TextField.Root
           defaultValue={issue?.title}
           placeholder="Title"
@@ -82,7 +94,8 @@ const IssueForm = ({ issue }: Props) => {
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button type="submit" disabled={isSubmitted}>
-          Submit New Issue {isSubmitted && <Spinner />}
+          {issue ? "Update Issue" : "Submit New Issue"}{" "}
+          {isSubmitted && <Spinner />}
         </Button>
       </form>
     </div>
