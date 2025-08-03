@@ -12,7 +12,11 @@ const DeleteBtn = ({ issueId }: { issueId: number }) => {
     router.refresh();
   };
 
-  return <Button onClick={deleteIssue}>Delete Issue</Button>;
+  return (
+    <Button color="red" onClick={deleteIssue}>
+      Delete Issue
+    </Button>
+  );
 };
 
 export default DeleteBtn;
