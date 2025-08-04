@@ -14,6 +14,7 @@ import {
   Text,
   Avatar,
 } from "@radix-ui/themes";
+import Skeleton from "@/app/components/Skeleton";
 const NavBar = () => {
   // thsi function is a method for getting the current route of the selected user
 
@@ -80,7 +81,7 @@ const NavLinks = () => {
 const AuthSatatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem" />;
 
   if (status === "unauthenticated")
     return (
