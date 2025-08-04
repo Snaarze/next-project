@@ -5,8 +5,9 @@ import RadixLink from "../../components/Link";
 import NewIssueBtn from "./NewIssueBtn";
 import { Issue, Status } from "@/app/generated/prisma";
 import Link from "next/link";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
 
-type SearchParams = Promise<{ status: Status }>;
+type SearchParams = Promise<{ status: Status; orderBy: keyof Issue }>;
 
 interface Props {
   searchParams: SearchParams;
@@ -15,7 +16,6 @@ interface Props {
 const IssuesPage = async (props: Props) => {
   const searchParams = await props.searchParams;
 
-  console.log(searchParams.status);
   const statuses = Object.values(Status);
 
   const status = statuses.includes(searchParams.status)
@@ -70,7 +70,16 @@ const IssuesPage = async (props: Props) => {
                 key={column.value}
                 className={column.classname}
               >
-                <Link href="">{column.label}</Link>
+                <Link
+                  href={{
+                    query: { ...searchParams, orderBy: column.value },
+                  }}
+                >
+                  {column.value}
+                </Link>
+                {column.value === searchParams.orderBy && (
+                  <ArrowUpIcon className="inline" />
+                )}
               </Table.ColumnHeaderCell>
             ))}
           </Table.Row>
