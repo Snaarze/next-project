@@ -20,6 +20,15 @@
   }
 }
 
+@layer utilities {
+  .nav-link {
+    @apply text-zinc-500 hover:text-zinc-800 transition-colors;
+  }
+  .selected-path {
+    @apply !text-zinc-900;
+  }
+}
+
 body {
   /* background: var(--background); */
   /* color: var(--foreground); */

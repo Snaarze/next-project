@@ -11,6 +11,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // an advanced solution for getting an ? image or not loading the content of the image which were declined by google
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          {
+            key: "referrer-policy",
+            value: "no-referrer",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
