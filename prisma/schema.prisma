@@ -19,14 +19,17 @@ model User {
   name          String?
   username      String?         @unique
   email         String?         @unique
+  assignedIssues Issue[] 
   emailVerified DateTime?
   password      String?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  google String?
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-  assignedIssues Issue[] 
+  // relational with issues
+ 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

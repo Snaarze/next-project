@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import issuesSchema from "../schema";
 import { getServerSession } from "next-auth";
 import { serverSession } from "../../auth/[...nextauth]/route";
+import { patchIssuesSchema } from "@/app/validationSchema";
 
 interface Props {
   params: { id: string };
@@ -22,18 +23,29 @@ export async function GET(request: NextRequest, { params }: Props) {
 }
 
 export async function PATCH(request: NextRequest, { params }: Props) {
-  const session = await getServerSession(serverSession);
+  // const session = await getServerSession(serverSession);
 
-  if (!session) return NextResponse.json({}, { status: 401 });
+  // if (!session) return NextResponse.json({}, { status: 401 });
   const body = await request.json();
 
-  const validation = issuesSchema.safeParse(body);
+  const validation = patchIssuesSchema.safeParse(body);
 
   if (!validation.success)
     return NextResponse.json(validation.error.issues, { status: 401 });
 
   // my current approach is without validating the uniqueness of the object by finding it via function
   // mosh approach is check if there are valid object
+  const { assignedToUserId, title, description } = body;
+  console.log(body);
+  if (assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: assignedToUserId,
+      },
+    });
+
+    if (!user) NextResponse.json({ error: "Invalid user" }, { status: 400 });
+  }
 
   const issue = await prisma.issue.findUnique({
     where: {
@@ -41,7 +53,8 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     },
   });
 
-  if (!issue) NextResponse.json({ error: "Invalid Issue" }, { status: 404 });
+  if (!issue)
+    return NextResponse.json({ error: "Invalid Issue" }, { status: 404 });
 
   // here is my aprroach directly accessing the data via query and get the data by where clause
   const updatedIssue = await prisma.issue.update({
@@ -49,8 +62,9 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       id: issue?.id,
     },
     data: {
-      title: body.title,
-      description: body.description,
+      title,
+      description,
+      assignedToUserId,
     },
   });
   return NextResponse.json(updatedIssue);
