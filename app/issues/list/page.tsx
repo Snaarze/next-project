@@ -14,12 +14,27 @@ interface Props {
 }
 
 const IssuesPage = async (props: Props) => {
+  const columns: {
+    label: string;
+    value: keyof Issue;
+    classname?: string;
+  }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status", classname: "hidden md:table-cell" },
+    { label: "Created", value: "createdAt", classname: "hidden md:table-cell" },
+  ];
   const searchParams = await props.searchParams;
 
   const statuses = Object.values(Status);
 
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
+    : undefined;
+
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
   // directly get the data from the database without need to use the useState hooks, and interface
@@ -29,6 +44,7 @@ const IssuesPage = async (props: Props) => {
     where: {
       status,
     },
+    orderBy,
   });
 
   // doing this will need to convert the component to client side
@@ -49,15 +65,6 @@ const IssuesPage = async (props: Props) => {
 
   //   fetchData();
   // }, []);
-  const columns: {
-    label: string;
-    value: keyof Issue;
-    classname?: string;
-  }[] = [
-    { label: "Issue", value: "title" },
-    { label: "Status", value: "status", classname: "hidden md:table-cell" },
-    { label: "Created", value: "createdAt", classname: "hidden md:table-cell" },
-  ];
 
   return (
     <div>
