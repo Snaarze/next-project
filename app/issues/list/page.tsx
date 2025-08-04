@@ -3,12 +3,33 @@ import { Table } from "@radix-ui/themes";
 import IssueStatusBadge from "../../components/IssueStatusBadge";
 import RadixLink from "../../components/Link";
 import NewIssueBtn from "./NewIssueBtn";
+import { Issue, Status } from "@/app/generated/prisma";
+import Link from "next/link";
 
-const IssuesPage = async () => {
+type SearchParams = Promise<{ status: Status }>;
+
+interface Props {
+  searchParams: SearchParams;
+}
+
+const IssuesPage = async (props: Props) => {
+  const searchParams = await props.searchParams;
+
+  console.log(searchParams.status);
+  const statuses = Object.values(Status);
+
+  const status = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
   // directly get the data from the database without need to use the useState hooks, and interface
   // which is kinda weird as this course is focusing in typescript and nextjs
   // although it makes sense using in this scenario and it makes the website fast by rendering it via server
-  const issues = await prisma.issue.findMany();
+  const issues = await prisma.issue.findMany({
+    where: {
+      status,
+    },
+  });
 
   // doing this will need to convert the component to client side
   // const [data, setData] = useState<Issue>();
@@ -28,6 +49,15 @@ const IssuesPage = async () => {
 
   //   fetchData();
   // }, []);
+  const columns: {
+    label: string;
+    value: keyof Issue;
+    classname?: string;
+  }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status", classname: "hidden md:table-cell" },
+    { label: "Created", value: "createdAt", classname: "hidden md:table-cell" },
+  ];
 
   return (
     <div>
@@ -35,13 +65,14 @@ const IssuesPage = async () => {
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map((column) => (
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={column.classname}
+              >
+                <Link href="">{column.label}</Link>
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
         <Table.Body>
