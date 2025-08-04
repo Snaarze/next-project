@@ -16,7 +16,7 @@ const NavBar = () => {
     },
     {
       label: "Issues",
-      link: "/issues",
+      link: "/issues/list",
     },
   ];
   //   remove this we can use usePathName which are built in for nextjs tracking which path is the current user

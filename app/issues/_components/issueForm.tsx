@@ -43,7 +43,7 @@ const IssueForm = ({ issue }: Props) => {
         router.push(`/issues/${issue?.id}`);
       } else {
         await axios.post("/api/issues/", data);
-        router.push("/issues");
+        router.push("/issues/list");
       }
       alert(issue ? "Successfully Updated" : "Successfully Added!");
     } catch (e) {

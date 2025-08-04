@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/client";
 import { Box, Grid, Flex } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import React from "react";
-import EditIssueBtn from "./edit/EditIssueBtn";
+import EditIssueBtn from "../edit/[id]/EditIssueBtn";
 import IssueDetail from "./IssueDetail";
 import DeleteBtn from "./delete/deleteBtn";
 interface Props {
