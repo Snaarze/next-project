@@ -30,7 +30,7 @@ const DeleteBtn = ({ issueId }: { issueId: number }) => {
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="soft" color="red">
+            <Button variant="soft" color="red" onClick={deleteIssue}>
               Delete
             </Button>
           </AlertDialog.Action>
