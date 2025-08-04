@@ -26,7 +26,7 @@ model User {
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
- 
+  assignedIssues Issue[] 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -98,6 +98,9 @@ model Issue {
   status      Status   @default(OPEN)
   createdAt   DateTime @default(now()) // default value is the current date
   updatedAt   DateTime @updatedAt
+  assignedToUserId String? @db.VarChar(255)
+  // add relationship between to table
+  assignedToUser User? @relation(fields : [assignedToUserId], references: [id])
 }
 
 // present three values

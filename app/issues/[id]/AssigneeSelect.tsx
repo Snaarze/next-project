@@ -3,7 +3,6 @@ import { User } from "@/app/generated/prisma";
 import { Select } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { notFound } from "next/navigation";
 import Skeleton from "@/app/components/Skeleton";
 const AssigneeSelect = () => {
   const {
