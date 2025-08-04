@@ -1,6 +1,8 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import issuesSchema from "../schema";
+import { getServerSession } from "next-auth";
+import { serverSession } from "../../auth/[...nextauth]/route";
 
 interface Props {
   params: { id: string };
@@ -20,6 +22,9 @@ export async function GET(request: NextRequest, { params }: Props) {
 }
 
 export async function PATCH(request: NextRequest, { params }: Props) {
+  const session = await getServerSession(serverSession);
+
+  if (!session) return NextResponse.json({}, { status: 401 });
   const body = await request.json();
 
   const validation = issuesSchema.safeParse(body);
@@ -52,6 +57,10 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 }
 
 export async function DELETE(request: NextRequest, { params }: Props) {
+  const session = await getServerSession(serverSession);
+
+  if (!session) return NextResponse.json({}, { status: 401 });
+
   const issue = await prisma.issue.delete({
     where: {
       id: parseInt(params.id),
