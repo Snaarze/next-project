@@ -1,5 +1,5 @@
 "use client";
-import { TextField, Button, Callout, Text, Spinner } from "@radix-ui/themes";
+import { TextField, Button, Callout, Spinner } from "@radix-ui/themes";
 import { useForm, Controller } from "react-hook-form";
 import "easymde/dist/easymde.min.css";
 import axios from "axios";
@@ -28,7 +28,7 @@ const IssueForm = ({ issue }: Props) => {
     register,
     control,
     handleSubmit,
-    formState: { errors, isLoading },
+    formState: { errors },
   } = useForm<issueFormData>({
     resolver: zodResolver(issuesSchema),
   });
@@ -47,6 +47,7 @@ const IssueForm = ({ issue }: Props) => {
       }
       alert(issue ? "Successfully Updated" : "Successfully Added!");
     } catch (e) {
+      console.log(e);
       setError("An unexpected Error");
       setSubmitting(false);
     }

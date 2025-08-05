@@ -1,5 +1,5 @@
 import { IssueStatusBadge } from "@/app/components";
-import { Issue, Status } from "@/app/generated/prisma";
+import { Issue } from "@/app/generated/prisma";
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import ReactMarkDown from "react-markdown";
 

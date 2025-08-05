@@ -7,7 +7,6 @@ import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import {
   Box,
-  Button,
   Container,
   Flex,
   DropdownMenu,
@@ -96,7 +95,7 @@ const AuthSatatus = () => {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <Avatar
-              src={session.user?.image!}
+              src={session.user!.image!}
               fallback="?"
               size="2"
               radius="full"
@@ -107,7 +106,7 @@ const AuthSatatus = () => {
           <DropdownMenu.Content>
             <DropdownMenu.Label>
               <Text size="2" color="gray">
-                {session.user?.email}
+                {session.user!.email!}
               </Text>
             </DropdownMenu.Label>
             <DropdownMenu.Item>

@@ -2,17 +2,19 @@ import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import issuesSchema from "../schema";
 import { getServerSession } from "next-auth";
-import { serverSession } from "../../auth/[...nextauth]/route";
+import {} from "../../auth/[...nextauth]/route";
 import { patchIssuesSchema } from "@/app/validationSchema";
+import AuthOption from "@/app/auth/AuthOption";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function GET(request: NextRequest, { params }: Props) {
+  const { id } = await params;
   const user = await prisma.issue.findUnique({
     where: {
-      id: parseInt(params.id),
+      id: parseInt(id),
     },
   });
 
@@ -23,10 +25,11 @@ export async function GET(request: NextRequest, { params }: Props) {
 }
 
 export async function PATCH(request: NextRequest, { params }: Props) {
-  // const session = await getServerSession(serverSession);
+  const session = await getServerSession(AuthOption);
 
-  // if (!session) return NextResponse.json({}, { status: 401 });
+  if (!session) return NextResponse.json({}, { status: 401 });
   const body = await request.json();
+  const { id } = await params;
 
   const validation = patchIssuesSchema.safeParse(body);
 
@@ -36,7 +39,6 @@ export async function PATCH(request: NextRequest, { params }: Props) {
   // my current approach is without validating the uniqueness of the object by finding it via function
   // mosh approach is check if there are valid object
   const { assignedToUserId, title, description } = body;
-  console.log(body);
   if (assignedToUserId) {
     const user = await prisma.user.findUnique({
       where: {
@@ -49,7 +51,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 
   const issue = await prisma.issue.findUnique({
     where: {
-      id: parseInt(params.id),
+      id: parseInt(id),
     },
   });
 
@@ -71,13 +73,13 @@ export async function PATCH(request: NextRequest, { params }: Props) {
 }
 
 export async function DELETE(request: NextRequest, { params }: Props) {
-  const session = await getServerSession(serverSession);
-
+  const session = await getServerSession(AuthOption);
+  const { id } = await params;
   if (!session) return NextResponse.json({}, { status: 401 });
 
   const issue = await prisma.issue.delete({
     where: {
-      id: parseInt(params.id),
+      id: parseInt(id),
     },
   });
 

@@ -6,17 +6,19 @@ import EditIssueBtn from "../edit/[id]/EditIssueBtn";
 import IssueDetail from "./IssueDetail";
 import DeleteBtn from "./delete/deleteBtn";
 import { getServerSession } from "next-auth";
-import { serverSession } from "@/app/api/auth/[...nextauth]/route";
+
 import AssigneeSelect from "./AssigneeSelect";
-interface Props {
-  params: { id: string };
-}
+import AuthOption from "@/app/auth/AuthOption";
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
 
 const page = async ({ params }: Props) => {
   // this doesnt work even if we use parseInt it would totally be unusable
   //   if (typeof params.id !== "number") return notFound();
   // with the nextjs api need to be fetch
-  const session = await getServerSession(serverSession);
+  const session = await getServerSession(AuthOption);
   const { id } = await params;
   const uniqueIssue = await prisma.issue.findUnique({
     where: {

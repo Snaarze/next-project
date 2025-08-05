@@ -7,9 +7,9 @@ import Skeleton from "@/app/components/Skeleton";
 import toast, { Toaster } from "react-hot-toast";
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
   const { data: users, isLoading, error } = useUser();
-  if (isLoading) <Skeleton />;
+  if (isLoading) return <Skeleton />;
 
-  if (error) null;
+  if (error) return null;
 
   const changeAssignedUser = async (userId: string) => {
     try {
@@ -17,6 +17,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
         assignedToUserId: userId === "Unassigned" ? null : userId,
       });
     } catch (error) {
+      console.log(error);
       toast.error("Changes could not be saved.");
     }
   };

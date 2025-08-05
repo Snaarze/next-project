@@ -1,5 +1,5 @@
 import { RadixLink, IssueStatusBadge } from "@/app/components";
-import { Issue, Status } from "@/app/generated/prisma";
+import { Issue } from "@/app/generated/prisma";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
 import Link from "next/link";
@@ -41,7 +41,7 @@ const IssueTable = async ({ searchParams, issues }: Props) => {
         {issues.map((issue) => (
           <Table.Row key={issue.id}>
             <Table.Cell>
-              <RadixLink href={`/issues/${issue.id}`} children={issue.title} />
+              <RadixLink href={`/issues/${issue.id}`} label={issue.title} />
               <div className="block md:hidden">
                 <IssueStatusBadge status={issue.status} />
               </div>
