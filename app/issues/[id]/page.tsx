@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/client";
 import { Box, Grid, Flex } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { cache } from "react";
 import EditIssueBtn from "../edit/[id]/EditIssueBtn";
 import IssueDetail from "./IssueDetail";
 import DeleteBtn from "./delete/deleteBtn";
@@ -9,11 +9,19 @@ import { getServerSession } from "next-auth";
 
 import AssigneeSelect from "./AssigneeSelect";
 import AuthOption from "@/app/auth/AuthOption";
-import { Issue } from "@/app/generated/prisma";
 
 type Props = {
   params: Promise<{ id: string }>;
 };
+
+// no need to use async and await if you are returning it directly
+const fetchUser = cache((issueId: number) => {
+  return prisma.issue.findUnique({
+    where: {
+      id: issueId,
+    },
+  });
+});
 
 const page = async ({ params }: Props) => {
   // this doesnt work even if we use parseInt it would totally be unusable
@@ -21,11 +29,7 @@ const page = async ({ params }: Props) => {
   // with the nextjs api need to be fetch
   const session = await getServerSession(AuthOption);
   const { id } = await params;
-  const uniqueIssue = await prisma.issue.findUnique({
-    where: {
-      id: parseInt(id),
-    },
-  });
+  const uniqueIssue = await fetchUser(parseInt(id));
 
   if (!uniqueIssue) return notFound();
 
@@ -53,11 +57,7 @@ export const revalidate = 0;
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const issueTitle = await prisma.issue.findUnique({
-    where: {
-      id: parseInt(id),
-    },
-  });
+  const issueTitle = await fetchUser(parseInt(id));
 
   return {
     title: issueTitle?.title,
