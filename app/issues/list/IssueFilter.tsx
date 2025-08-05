@@ -2,9 +2,9 @@
 import { Status } from "@/app/generated/prisma";
 import { Select } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
-const IssueFilter = () => {
+const IssueFilterComponent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -39,6 +39,14 @@ const IssueFilter = () => {
         ))}
       </Select.Content>
     </Select.Root>
+  );
+};
+
+const IssueFilter = () => {
+  return (
+    <Suspense>
+      <IssueFilterComponent />
+    </Suspense>
   );
 };
 
