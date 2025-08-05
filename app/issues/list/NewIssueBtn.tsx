@@ -4,7 +4,7 @@ import { Flex } from "@radix-ui/themes";
 import IssueFilter from "./IssueFilter";
 const NewIssueBtn = () => {
   return (
-    <Flex className="mb-5" justify="between">
+    <Flex justify="between">
       <IssueFilter />
       <Button>
         <Link href="/issues/new">New Issue</Link>
