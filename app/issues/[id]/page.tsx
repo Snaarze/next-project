@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 
 import AssigneeSelect from "./AssigneeSelect";
 import AuthOption from "@/app/auth/AuthOption";
+import { Issue } from "@/app/generated/prisma";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -48,4 +49,19 @@ const page = async ({ params }: Props) => {
 
 export const revalidate = 0;
 
+// this dynamically change the metadata title and description
+
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const issueTitle = await prisma.issue.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+  });
+
+  return {
+    title: issueTitle?.title,
+    description: "Details of issue " + issueTitle?.id,
+  };
+}
 export default page;
