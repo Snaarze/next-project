@@ -33,6 +33,8 @@ export default async function Home() {
   );
 }
 
+export const revalidate = 0;
+
 // next js looks for
 export const metadata: Metadata = {
   title: "Issue Tracker - Dashboard",
